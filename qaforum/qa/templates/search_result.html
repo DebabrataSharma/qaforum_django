@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block body %}
+<br>
+{% if result.hits %}
+<h1 class="mt-6">Search Results</h1>
+
+{% for each_question in result.hits %}
+    <!-- <div class="row"> -->
+        
+        <div class="col-sm-4">
+            <div class="card text-center">
+                <div class="card-header">
+                    <h4 class="mt-6 text-center">Question:  {{each_question.title}}</h4>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Description:  {{each_question.description}}</h5>
+                    <p class="card-text text-muted">by  {{each_question.user}} on:  {{each_question.date_of_add}}</p>
+                    
+                </div>
+                <div class="card-footer text-muted">
+        
+                    <a href="{% url 'qa:get_answers' each_question.id %}" class="btn btn-primary">Answers</a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+  {% endfor %}
+  
+  {% else %}
+  <h1 class="mt-6 text-center">No match</h1>
+    {% endif %}
+
+
+
+{% endblock %}
+
+   

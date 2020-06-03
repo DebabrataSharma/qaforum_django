@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block body %}
+{% load crispy_forms_tags %}
+<br>
+<div class="col-sm-4">
+  <h1 class="mt-6">Question</h1>
+  <div class="card text-center">
+      <div class="card-header">
+          Question:  {{answer.ques.title}}
+      </div>
+      <div class="card-body">
+          <h5 class="card-title">Description:  {{answer.ques.description}}</h5>
+          <p class="card-text text-muted">by  {{answer.ques.user.username}}</p>
+      </div>
+      <div class="card-footer text-muted">
+
+          Added on:  {{answer.ques.date_of_add}}
+      </div>
+  </div>
+</div>
+</div><br><br>
+
+
+
+  <div class="col-4">
+    <h1 class="mt-6">Edit Answer</h1>
+    <hr class="mt-0 mb-4">
+    <form action="" method="post" novalidate>
+      {% csrf_token %}
+      {{ form|crispy }}
+      <button type="submit" class="btn btn-success">Submit</button>
+    </form>  
+  </div>
+  
+{% endblock %}

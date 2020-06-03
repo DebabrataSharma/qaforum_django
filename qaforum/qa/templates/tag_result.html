@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block body %}
+{% if question %}
+    {% for each_question in question %}
+    <!-- <div class="row"> -->
+        <div class="col-sm-4">
+            <div class="card text-center">
+                <div class="card-header">
+                    <h4 class="mt-6 text-center">Question:  {{each_question.title}}</h4>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Description:  {{each_question.description}}</h5>
+                    <p class="card-text text-muted">by  {{each_question.user.username}} on:  {{each_question.date_of_add}}</p>
+                    <a href="{% url 'qa:get_answers' each_question.id %}" class="btn btn-primary">Answers</a>
+                </div>
+                <div class="card-footer text-muted">
+        
+                    <div style="display:flex">
+                        Tags:
+                        {% for tag in each_question.tags.all %}
+                         <a href="{% url 'qa:tag_result' tag.slug %}" class="mr-1 badge badge-info">#{{ tag }}</a>
+                        {% endfor %}
+                        </div>
+                </div>
+            </div>
+        </div>
+    <br>
+  {% endfor %}
+  
+  {% else %}
+    No questions
+    {% endif %}
+
+{% endblock %}
+
+   

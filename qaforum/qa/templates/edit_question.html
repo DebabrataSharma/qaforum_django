@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block body %}
+{% load crispy_forms_tags %}
+<br>
+
+<div class="row justify-content-center">
+  <div class="col-4">
+    <h1 class="mt-6">Edit Question</h1>
+    <hr class="mt-5 mb-4">
+    <form action="" method="post" novalidate>
+      {% csrf_token %}
+      {{ form|crispy }}
+      <button type="submit" class="btn btn-success">Submit</button>
+    </form>  
+  </div>
+</div>
+  
+{% endblock %}

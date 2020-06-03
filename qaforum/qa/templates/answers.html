@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block body %}
+    {% block style %}
+    <style>
+        .link{
+            padding-left: 30%;
+        }
+        .mt-6{
+            color: rgb(114, 107, 107);
+            padding-left: 30%;
+        }
+        
+    </style>
+    {% endblock %} 
+    {% if question %}
+    <br>
+    <div class='link'>
+        
+
+    <a href="{% url 'qa:post_answer' question.id %}" class="btn btn-success">Post Answer</a><br><br>
+    <br>
+    <br>
+      
+    <div class="col-sm-6">
+        <div class="card text-center">
+            <div class="card-header">
+                <h4 class="mt-2 text-center">Question:  {{question.title}}</h4>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Description:  {{question.description}}</h5>
+                <p class="card-text text-muted">by  {{question.user.username}}</p>
+            </div>
+            <div class="card-footer text-muted">
+    
+                Added on:  {{question.date_of_add}}
+            </div>
+        </div>
+    </div>
+</div>
+    <br><br>
+        {% if answers %}
+        <h3 class="mt-6">Answers</h3>
+
+            {% for each_answer in answers %}
+            <div class='link'>
+                
+                <div class="col-sm-6">
+                    <div class="card text-center">
+                        <div class="card-header">
+                        Answered by:  {{each_answer.user.username}}
+                        </div>
+                        <div class="card-body">
+                        <h5 class="card-title">Answer:  {{each_answer.answer_desc}}</h5>
+                        <p class="card-text text-muted">Added on:  {{each_answer.date_of_add}}</p>
+                        </div>
+                    <!-- <div class="card-footer text-muted">
+            
+                        Added on:  {{each_question.date_of_add}}
+                    </div> -->
+                    </div>
+                </div>
+            </div><br><br>
+        
+          
+            {% endfor %}
+        </div>
+            {% else %}
+        <h3>No Answers Posted</h3>
+        {% endif %}
+    </div>
+
+    
+    {% endif %}
+{% endblock %}
