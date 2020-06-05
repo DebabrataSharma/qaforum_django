@@ -11,7 +11,12 @@ from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def signup_view(request):
+    """
+    Url to user's sign up page.
 
+    :http relative-url: /user/signup
+    :http-method : POST, GET
+    """
     if request.method== "POST":
         form = UserCreationForm(request.POST)
         if form.is_valid:
@@ -27,6 +32,12 @@ def signup_view(request):
 
 def login_view(request):
 
+    """
+    Url to user's login page.
+
+    :http relative-url: /user/login
+    :http-method : POST, GET
+    """
     if request.user.is_authenticated:
         return redirect('home:home')
 
@@ -48,17 +59,27 @@ def login_view(request):
         return render(request, 'login.html', context)
 
 def logout_view(request):
+    """
+    Url to user's logout.
+
+    :http relative-url: /user/logout
+    :http-method : GET
+    """
     logout(request)
     return redirect('home:home')
 
 @login_required(login_url="/user/login/")
 def user_details(request, username):
+    """
+    Url to user's details.
+
+    :http relative-url: /user/user_details
+    :http-method : GET
+    """
     user = request.user
     question = Question.objects.filter(user=user)
     question_count = question.count()
-    print(question, question_count)
     answers = Answer.objects.filter(user=user)
     answers_count = answers.count()
-    print(".......???????", answers, answers_count)
     context = {'user':user, 'question_count':question_count, 'answer_count':answers_count}
     return render(request, 'user_details.html', context)

@@ -16,4 +16,5 @@ urlpatterns = [
     path('question/tag/<slug>', views.tag_result, name='tag_result'),
     path('search', views.search, name='search'),
     path('download_json_data', views.download_json_data, name='download_json_data'),
-    ]
+
+]

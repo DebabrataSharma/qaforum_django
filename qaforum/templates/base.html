@@ -8,31 +8,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title> Q/A forum </title>
-    <!-- <link rel="stylesheet" type="text/css" href="{% static '/css/style.css'%}"> -->
-      <!--
-  
-      <meta charset="utf-8">
-  
-      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  
-      
-  
-      <link rel="stylesheet" type='text/css' href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.14/semantic.min.css">
-  
-   
-  
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" integrity="sha256-Uv9BNBucvCPipKQ2NS9wYpJmi8DTOEfTA/nH2aoJALw=" crossorigin="anonymous"></script>
-  
-      
-  
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css" integrity="sha256-aa0xaJgmK/X74WM224KMQeNQC2xYKwlAt08oZqjeF0E=" crossorigin="anonymous" />
-  
-     
-  
-      <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script> -->
-  
-      
-  
+    
       <script
   
       src="https://code.jquery.com/jquery-1.12.4.min.js"
@@ -87,15 +63,8 @@
   
               integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
   
-              crossorigin="anonymous"></script>
-  
-  ​
-  
-      <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script> --> 
-  
-  ​
-  
-  <style>
+              crossorigin="anonymous"></script>  
+  ​<style>
     .navbar {
     margin-top: -25;
     position: relative;
@@ -111,17 +80,11 @@
       .image{
 
 background-image: url("https://image.freepik.com/free-photo/businesswoman-hand-placing-questions-mark-word-with-wooden-cube_42256-1463.jpg");
-
 background-repeat: no-repeat;
-
 height:120%;
-
 background-position: center;
-
 background-repeat: no-repeat;
-
 background-size: cover;
-
 }  
 footer {
     display: block;
@@ -129,13 +92,8 @@ footer {
     color:gainsboro;
     }
 {% block style %}
-  
-  ​
-  
-      {% endblock style%}    
-
-    </style>  
- 
+{% endblock style%}    
+</style>   
 </head>
   <body>
     
@@ -157,17 +115,6 @@ footer {
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <!-- <a href=>Home</a>
-            {% if user.is_authenticated %}
-            <a href="">post question</a><br>
-            <a href="{% url 'qa:my_questions' %}">my question</a><br>
-            <a href="{% url 'qa:my_answers' %}">my answers</a><br>
-            <a href="{% url 'user:logout_view' %}">Logout</a>
-            {% endif %}
-            {% if user.is_anonymous %}
-            <a href="{% url 'user:login_view' %}">Login</a>
-            <a href="{% url 'user:signup_view' %}">Signup</a>
-            {% endif %} -->
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
             {% if not user.is_anonymous %}
@@ -201,17 +148,6 @@ footer {
             </li>
             {% endif %}
             
-            <!-- <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Dropdown
-              </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Something else here</a>
-              </div>
-            </li> -->
             
           </ul>
           <form class="form-inline my-2 my-lg-0" action="{% url 'qa:search'%}">
@@ -225,109 +161,11 @@ footer {
       {% block body %}
       {% endblock %}  ​
       </div>
-  <!-- <header>
-    <div class="container">
-        
-        <nav role="navigation">
-          <ul class="list">
-            <a href="/">Home</a>
-            {% if user.is_authenticated %}
-            <a href="{% url 'qa:post_question' %}">post question</a><br>
-            <a href="{% url 'qa:my_questions' %}">my question</a><br>
-            <a href="{% url 'qa:my_answers' %}">my answers</a><br>
-            <a href="{% url 'user:logout_view' %}">Logout</a>
-            {% endif %}
-            {% if user.is_anonymous %}
-            <a href="{% url 'user:login_view' %}">Login</a>
-            <a href="{% url 'user:signup_view' %}">Signup</a>
-            {% endif %}
-          </ul>
-
-        </nav>
-    </div>
-    <div class='user'>
-      {% if not user.is_anonymous %}
-                  <h3>Hi, {{ user }}</h3><br>
-      </div>
-      {% endif %} 
-    
-  </header>
   
-      
-  
-  
-  </body>
-  
-  
-
-
-{% load  static %}
-
-
- -->
-
-    
-  <!-- <body>
-
-  <!-- START: header -->
-  <!-- <style> -->
-    <!-- *{
-      margin: 0px;
-      padding: 0px;
-    }
-    header{
-      
-
-      background: aquamarine;
-      height: 120px;
-      width:100%;
-    }
-    body{
-      background:beige;
-    }
-    .list{
-      padding-top: 20px;
-      
-      display: flex;
-      justify-content:space-evenly;
-    }
-    a:link, a:visited {
-    text-decoration: none;
-    padding: 14px 25px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-family: Arial;
-      font-size:x-large;
-  }
-
-  a:hover, a:active {
-    text-decoration: underline;
-  
-
-  }
-  .user{
-      padding-top: 1%;
-      padding-left: 5%;
-      color:darkcyan;
-      font-size: large;
-  }
- 
-</style> -->
-
-
-<!-- Footer -->
-
-<!-- Footer -->
-
 </body>
 <footer class="page-footer font-small black">
-
-  <!-- Copyright -->
   <div class="footer-copyright text-center py-3">© 2020 Copyright:
     <a href="#"> ASK NOW</a>
   </div>
-  <!-- Copyright -->
-
 </footer>
 </html>

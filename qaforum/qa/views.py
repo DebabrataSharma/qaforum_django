@@ -14,19 +14,23 @@ from taggit.models import Tag
 from algoliasearch_django import raw_search
 from django.http import HttpResponse
 import json
-from .tasks import long_task
+from .tasks import celery_task
 from django.views.decorators.csrf import csrf_exempt
+
 
 
 
 User = get_user_model()
 index_name = 'qa'
 
-# search part
-
 @login_required(login_url="/user/login/")
 def post_question(request):
+    """
+    Url for post question.
 
+    :http relative-url: /qa/question/add
+    :http-method : POST
+    """
     if request.method=='POST':
         form = PostQuestionForm(request.POST)
         if form.is_valid():
@@ -46,29 +50,40 @@ def post_question(request):
 
 @login_required(login_url="/user/login/")
 def my_questions(request):
+    """
+    Url for user's question.
+
+    :http relative-url: /qa/my_questions
+    :http-method : GET
+    """
     questions = Question.objects.filter(user=request.user)        
     context = {'question': questions}
-    # print(questions)
     return render(request, 'my_questions.html', context)
 
 def tag_result(request, slug):
+    """
+    Url for tag-sort.
+
+    :http relative-url: /qa/question/tag/<tag-slug>
+    :http-method : GET
+    """
     tag = get_object_or_404(Tag, slug=slug)
     question = Question.objects.filter(tags=tag)
     context = {'tags':  tag, 'question': question}
-    # print(tag)
-    # print('\n\n', question)
     return render(request, 'tag_result.html', context)
 
 
 @login_required(login_url="/user/login/")   
 def update_question(request, id):
+    """
+    Url for user's question update.
+
+    :http relative-url: /qa/questions/<q_id>/edit
+    :http-method : POST
+    """
     ques_obj = get_object_or_404(Question, id=id)
-    # print("qqqqqqqqq", ques_obj)
-    # print (request.user, type(request.user))
-    # print(ques_obj.user, type(ques_obj.user))
-    # question = Question.objects.filter(id=q_id)
+
     if request.user == ques_obj.user:
-        
         form = PostQuestionForm(request.POST or None, instance=ques_obj)
 
         if request.method=="POST":
@@ -88,6 +103,12 @@ def update_question(request, id):
 
 @login_required(login_url="/user/login/")   
 def delete_question(request, id):
+    """
+    Url for user's question delete.
+
+    :http relative-url: /qa/questions/<q_id>/delete
+    :http-method : POST
+    """
     question = Question.objects.get(id=id)
     if request.user==question.user:
         question.delete()
@@ -97,6 +118,12 @@ def delete_question(request, id):
 
 
 def get_answers(request, id):
+    """
+    Url for get answers to a question.
+
+    :http relative-url: /qa/questions/<q_id>/answers
+    :http-method : GET
+    """
     question = Question.objects.get(id=id)
     answer = Answer.objects.filter(ques=question)
     context = {'question': question, 'answers':answer}
@@ -104,6 +131,12 @@ def get_answers(request, id):
 
 @login_required(login_url="/user/login/")   
 def post_answer(request, id):
+    """
+    Url for post answer to a question.
+
+    :http relative-url: /qa/questions/<q_id>/answers
+    :http-method : POST
+    """
     question = Question.objects.get(id=id)
     if request.method=='POST':
         form = PostAnswerForm(request.POST)
@@ -120,17 +153,25 @@ def post_answer(request, id):
 
 @login_required(login_url="/user/login/")   
 def my_answers(request):
+    """
+    Url for user's answers.
+
+    :http relative-url: /qa/my_answers
+    :http-method : GET
+    """
     answers = Answer.objects.filter(user=request.user)        
     context = {'answer': answers}
     return render(request, 'my_answers.html', context)
 
 @login_required(login_url="/user/login/")   
 def update_answer(request, id):
+    """
+    Url for user's answers update.
+
+    :http relative-url: /qa/answer/<id>/edit
+    :http-method : POST
+    """
     ans_obj = get_object_or_404(Answer, id=id)
-    # print("qqqqqqqqq", ans_obj)
-    # print (request.user, type(request.user))
-    # print(ans_obj.user, type(ans_obj.user))
-    # question = Question.objects.filter(id=q_id)
     if request.user == ans_obj.user:
         
         form = PostAnswerForm(request.POST or None, instance=ans_obj)
@@ -152,6 +193,12 @@ def update_answer(request, id):
         
 @login_required(login_url="/user/login/")   
 def delete_answer(request, id):
+    """
+    Url for user's answers delete.
+
+    :http relative-url: /qa/answer/<id>/delete
+    :http-method : POST
+    """
     answer = Answer.objects.get(id=id)
     if request.user==answer.user:
         answer.delete()
@@ -160,54 +207,27 @@ def delete_answer(request, id):
         return redirect('home:home')
 
 def search(request):
+    """
+    Url for search.
+
+    :http relative-url: /qa/search
+    :http-method : GET
+    """
     query = request.GET.get('q')
-    print(query)
     params = { "hitsPerPage": 5 }
-    response = raw_search(Question, query, params)
-    print(response)
-      
+    response = raw_search(Question, query, params)    
     context = {'result': response}
     return render(request, 'search_result.html', context)
 
 
-# def taskstatus(task_id):
-#     task = long_task.AsyncResult(task_id)
-#     if task.state == 'PENDING':
-#         # job did not start yet
-#         response = {
-#             'state': task.state,
-#             'current': 0,
-#             'total': 1,
-#             'status': 'Pending...'
-#         }
-#     elif task.state != 'FAILURE':
-#         response = {
-#             'state': task.state,
-#             'current': task.info.get('current', 0),
-#             'total': task.info.get('total', 1),
-#             'status': task.info.get('status', '')
-#         }
-#         if 'result' in task.info:
-#             response['result'] = task.info['result']
-#     else:
-#         # something went wrong in the background job
-#         response = {
-#             'state': task.state,
-#             'current': 1,
-#             'total': 1,
-#             'status': str(task.info),  # this is the exception raised
-#         }
-#     print("asdasd", response)
-#     return response
-
 def download_json_data(request):
-    
+    """
+    Url to download user's data.
+
+    :http relative-url: /qa/download_json_data
+    :http-method : POST
+    """
     user = request.user
-    task = long_task.delay(user.id)
-    # print("............",task,task.id)
-    # location = taskstatus(task.id)
-    # print(location)
-    # print("yeiiiiiii")    
-    return redirect('home:home') 
-    
+    task = celery_task.delay(user.id, 1)
+    return HttpResponse(task.task_id)    
 

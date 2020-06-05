@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
 {% block body %}
       <br>
-      <script src="//cdnjs.cloudflare.com/ajax/libs/nanobar/0.2.1/nanobar.min.js"></script>
       <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    {% load static %}
+      <script src="{% static 'celery_progress/celery_progress.js' %}"></script>
+
       
         <div class="col-sm-4">
             <div class="card text-center">
@@ -16,73 +18,41 @@
                 </div>
                 <div class="card-footer text-muted">
         
-                    <a href="{% url 'qa:download_json_data' %}" class="btn btn-primary" download>Download Data</a>
-                    <div id="progress"></div></div>
+                <button id="start-bg-job" onClick='start_long_task()'>Download Data</button><br><br>
+                <div id="progress"></div>
+                <iframe id="my_iframe" style="display:none;"></iframe>
+
+
+                </div>
             </div>
         </div>
     <br><br>
     <hr>
-<!-- 
+    {% csrf_token %}
     <script>
-
-        function start_long_task() {
-            // add task status elements
-            div = $('<div class="progress"><div></div><div>0%</div><div>...</div><div>&nbsp;</div></div><hr>');
+    function start_long_task() {
+        div = $("<div class='progress-wrapper'><div id='progress-bar' class='progress-bar' style='background-color: #68a9ef; width: 0%;'>&nbsp;</div></div><div id='progress-bar-message'>Waiting for progress to start...</div>");
             $('#progress').append(div);
 
-            // create a progress bar
-            var nanobar = new Nanobar({
-                bg: '#44f',
-                target: div[0].childNodes[0]
-            });
-
-            // send ajax POST request to start background job
             $.ajax({
                 type: 'POST',
                 url: "{% url 'qa:download_json_data' %}",
-                data:{
-                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
-                },
-                success: function(data, status, request) {
-                    status_url = request.getResponseHeader('Location');
-                    update_progress(status_url, nanobar, div[0]);
-                    
-                },
+                data : {
+                        csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val(),
+                        },
+                cache: false,
+                success:  function(response) {
+                var progressUrl = "{% url 'celery_progress:task_status' 'task_id' %}"
+                var progressUrl = progressUrl.replace("task_id", response)
+                CeleryProgressBar.initProgressBar(progressUrl);
+                
+            },
                 error: function() {
                     alert('Unexpected error');
                 }
             });
         }
-        function update_progress(status_url, nanobar, status_div) {
-            // send GET request to status URL
-            $.getJSON(status_url, function(data) {
-                // update UI
-                percent = parseInt(data['current'] * 100 / data['total']);
-                nanobar.go(percent);
-                $(status_div.childNodes[1]).text(percent + '%');
-                $(status_div.childNodes[2]).text(data['status']);
-                if (data['state'] != 'PENDING' && data['state'] != 'PROGRESS') {
-                    if ('result' in data) {
-                        // show result
-                        $(status_div.childNodes[3]).text('Result: ' + data['result']);
-                    }
-                    else {
-                        // something unexpected happened
-                        $(status_div.childNodes[3]).text('Result: ' + data['state']);
-                    }
-                }
-                else {
-                    // rerun in 2 seconds
-                    setTimeout(function() {
-                        update_progress(status_url, nanobar, status_div);
-                    }, 2000);
-                }
-            });
-        }
-        $(function() {
-            $('#start-bg-job').click(start_long_task);
-        });
-    </script> -->
+    </script>
+
+
 {% endblock %}
-    
-  

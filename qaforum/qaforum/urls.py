@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from django.conf.urls import url
 from django.conf import settings
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
@@ -23,7 +23,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('user/', include('user.urls', namespace='user')),
     path('', include('home.urls', namespace='home')),
-    path('qa/', include('qa.urls', namespace='qa'))
+    path('qa/', include('qa.urls', namespace='qa')),
+    re_path(r'^celery-progress/', include('celery_progress.urls')), 
 ]
 
 urlpatterns+= staticfiles_urlpatterns()
