@@ -7,6 +7,6 @@ from .models import Question
 
 @register(Question)
 class QaModelIndex(AlgoliaIndex):
-    fields = ('id','title', 'description','user', 'date_of_add')
+    fields = ('id','title', 'description','user', 'created_date')
     settings = {'searchableAttributes': ['title', 'description']}
     index_name = 'qa'

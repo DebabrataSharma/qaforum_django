@@ -36,7 +36,7 @@ def post_question(request):
         if form.is_valid():
             post = form.save(commit=False)
             post.user = request.user
-            post.date_of_add = date.today()
+            post.created_date = date.today()
             post.save()
             form.save_m2m()
             return redirect('home:home')
@@ -90,7 +90,7 @@ def update_question(request, id):
             if form.is_valid():
                 post = form.save(commit=False)
                 post.user = request.user
-                post.date_of_add = date.today()
+                post.created_date = date.today()
                 post.save()
                 form.save_m2m()
                 return redirect('qa:my_questions')
@@ -125,7 +125,7 @@ def get_answers(request, id):
     :http-method : GET
     """
     question = Question.objects.get(id=id)
-    answer = Answer.objects.filter(ques=question)
+    answer = Answer.objects.filter(question=question)
     context = {'question': question, 'answers':answer}
     return render(request, 'answers.html', context )
 
@@ -143,8 +143,8 @@ def post_answer(request, id):
         if form.is_valid():
             post = form.save(commit=False)
             post.user = request.user
-            post.ques = question
-            post.date_of_add = date.today()
+            post.question= question
+            post.created_date = date.today()
             post.save()
             return redirect('home:home')
     form = PostAnswerForm()
@@ -180,8 +180,8 @@ def update_answer(request, id):
             if form.is_valid():
                 post = form.save(commit=False)
                 post.user = request.user
-                post.ques = ans_obj.ques
-                post.date_of_add = date.today()
+                post.question= ans_obj.ques
+                post.created_date = date.today()
                 post.save()
                 return redirect('qa:my_answers')
         

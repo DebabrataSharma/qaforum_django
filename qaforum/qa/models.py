@@ -13,7 +13,7 @@ class Question(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
     description = models.TextField()
-    date_of_add = models.DateField()
+    created_date = models.DateField()
     tags = TaggableManager()
 
     class Meta:
@@ -25,9 +25,9 @@ class Question(models.Model):
 
 class Answer(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    ques = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='ans')
+    question= models.ForeignKey(Question, on_delete=models.CASCADE, related_name='ans')
     answer_desc = models.TextField()
-    date_of_add = models.DateField()
+    created_date = models.DateField()
 
     class Meta:
         verbose_name = 'Answer'

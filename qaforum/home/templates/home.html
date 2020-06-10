@@ -35,7 +35,7 @@
                 </div>
                 <div class="card-body">
                     <h5 class="card-title">Description:  {{each_question.description}}</h5>
-                    <p class="card-text text-muted">by  {{each_question.user.username}} on:  {{each_question.date_of_add}}</p>
+                    <p class="card-text text-muted">by  {{each_question.user.username}} on:  {{each_question.created_date}}</p>
                     <a href="{% url 'qa:get_answers' each_question.id %}" class="btn btn-primary">Answers</a>
                 </div>
                 <div class="card-footer text-muted">

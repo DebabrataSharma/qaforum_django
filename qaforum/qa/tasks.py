@@ -17,7 +17,6 @@ def celery_task(self, user, duration):
     path = '/home/debabrata/mountblue/project-7/' + user_obj.username + '.json'
     file1 = open(path,"w", encoding='utf-8')
     json.dump(question, file1, ensure_ascii=False)
-    time.sleep(1)
     progress_recorder.set_progress(1, 1, description='my progress description')
     return "Done"
     

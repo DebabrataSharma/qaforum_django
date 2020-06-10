@@ -133,8 +133,8 @@ STATICFILES_DIRS = (
 )
 
 ALGOLIA = {
-    'APPLICATION_ID': '********',
-    'API_KEY': '***************'
+    'APPLICATION_ID': 'TG75Y9K1P9',
+    'API_KEY': '406bb82156cb84871d581b024c643f1b'
 }
 
 CELERY_BROKER_URL = 'redis://127.0.0.1:6379/0'

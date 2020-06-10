@@ -6,7 +6,7 @@ class PostQuestionForm(forms.ModelForm):
     class Meta:
         model = Question
         
-        exclude = ['date_of_add', 'user']
+        exclude = ['created_date', 'user']
 
 class PostAnswerForm(forms.ModelForm):
 
