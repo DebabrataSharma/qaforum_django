@@ -12,5 +12,5 @@ django-modelcluster==5.0.2
 django-six==1.0.4
 django-taggit==1.1.0
 django-test-plus==1.1.1
-Jinja2==2.11.1
+Jinja2==2.11.3
 
